@@ -4,3 +4,4 @@ AppPackages/
 npm.debug.log
 bin/
 bld/
+*.pfx
