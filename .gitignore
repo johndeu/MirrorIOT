@@ -2,4 +2,5 @@ node_modules/
 bld/
 AppPackages/
 npm.debug.log
-
+bin/
+bld/
