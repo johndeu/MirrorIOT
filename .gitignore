@@ -1,4 +1,5 @@
 node_modules/
 bld/
 AppPackages/
+npm.debug.log
 
