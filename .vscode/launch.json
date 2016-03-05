@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Debug in Chrome Extension",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:3000/index.html",
+            "runtimeArgs": [
+                "--new-window", //Open in new window
+                "--user-data-dir=C:/dev", //Can be any directory. Makes chrome load in a different directory so that it opens in a new instance.
+                "--remote-debugging-port=9222" //Open in port 9222 (standard chrome debug port)
+            ],
+            "webRoot": "app",
+            "cwd": "C:/Users/johndeu/OneDrive/Source/IOT/magicmirror/MagicMirror",
+            "sourceRoot": "C:/Users/johndeu/OneDrive/Source/IOT/magicmirror/MagicMirror/chrome/",
+            "externalConsole": false,
+            "sourceMaps": true,
+            "diagnosticLogging": false
+        },
+        {
+            "name": "Attach",
+            "type": "chrome",
+            "request": "attach",
+            "port": 9222,
+            "sourceMaps": true
+        }
+    ]
+}

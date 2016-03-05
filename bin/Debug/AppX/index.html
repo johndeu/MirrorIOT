@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-=1">    
+        
+    <title>MagicMirror</title>
+
+    <!-- WinJS references -->
+    <link href="WinJS/css/ui-dark.css" rel="stylesheet" />
+    <script src="WinJS/js/base.js"></script>
+    <script src="WinJS/js/ui.js"></script>
+
+    <!-- MagicMirror references -->
+    <link href="/css/default.css" rel="stylesheet" />
+    <script src="/js/default.js"></script>
+   
+     <!-- Material Lite -->
+     
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.1.2/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.1.2/material.min.js"></script>
+
+    <!-- IE required polyfills (from CDN), in this exact order -->
+    <script src="node_modules/es6-shim/es6-shim.min.js"></script>
+    <script src="node_modules/systemjs/dist/system-polyfills.js"></script>
+    <script src="node_modules/angular2/bundles/angular2-polyfills.js"></script>
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="node_modules/rxjs/bundles/Rx.min.js"></script>
+    <script src="node_modules/angular2/bundles/angular2.min.js"></script>
+    
+    <script src="node_modules/angular2/bundles/router.dev.js"></script>
+   
+    
+    <script>
+        System.config({
+            packages:{
+                app :{
+                    format: 'register',
+                    defaultExtension: 'js'
+                }
+            },
+            
+            map: {
+                // 'winjs' : 'WinJS/js/ui.js'
+            },
+        })
+        
+        System.import('app/main')
+                .then(null,console.error.bind(console));
+                
+            
+    </script>
+        
+</head>
+<body class="win-type-body">
+    <my-app>Loading angular app here.. </my-app>
+</body>
+</html>

@@ -1,0 +1,37 @@
+// Available variables which can be used inside of strings.
+// ${workspaceRoot}: the root folder of the team
+// ${file}: the current opened file
+// ${fileBasename}: the current opened file's basename
+// ${fileDirname}: the current opened file's dirname
+// ${fileExtname}: the current opened file's extension
+// ${cwd}: the current working directory of the spawned process
+
+// Uncomment the following section to use msbuild which compiles Typescript
+// and less files.
+/*
+{
+    "echoCommand": true,  
+	"version": "0.1.0",
+	"command": "msbuild",
+	"args": [
+		// Ask msbuild to generate full paths for file names.
+		"/property:GenerateFullPaths=true"
+	],
+	"taskSelector": "/t:",
+	"showOutput": "always",
+	"tasks": [
+		{
+            "isBuildCommand": true,
+			"taskName": "build",
+			// Show the output window only if unrecognized errors occur.
+			"showOutput": "always",
+			// Use the standard MS compiler pattern to detect errors, warnings
+			// and infos in the output.
+			"problemMatcher": [
+				"$msCompile",
+				"$lessCompile"
+			]
+		}
+	]
+}
+*/
