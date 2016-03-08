@@ -14,6 +14,7 @@ import {WeatherComponent} from "./weatherComponent/weather.component";
  
 export class AppComponent implements OnInit {
     date: string;
+    speakingStatus: string;
 
     constructor(private _speechService: SpeechService) {
 
@@ -42,6 +43,7 @@ export class AppComponent implements OnInit {
     
     onSpeechStateChanged(state:string) {
         console.log("App.Component: speech state changed: " + state);
+        this.speakingStatus = state;
     }
 
     onSpeechError(error: string) {

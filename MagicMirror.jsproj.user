@@ -10,7 +10,7 @@
     <RequireAuthentication>Universal</RequireAuthentication>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DebuggerFlavor>AppHostRemoteDebugger</DebuggerFlavor>
+    <DebuggerFlavor>AppHostLocalDebugger</DebuggerFlavor>
     <MachineName>deutscherpi</MachineName>
     <RequireAuthentication>Universal</RequireAuthentication>
   </PropertyGroup>

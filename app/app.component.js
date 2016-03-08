@@ -30,11 +30,11 @@ System.register(["angular2/core", "./speechService/speech.service", "./weatherCo
                 }
                 AppComponent.prototype.ngOnInit = function () {
                     this.date = "3/1/2016";
-                    this._speechService.say("Started");
                     this._speechService.onSpeaking.subscribe(this.onSpeaking);
                     this._speechService.onSpeechStateChanged.subscribe(this.onSpeechStateChanged);
                     this._speechService.onSpeechRecognized.subscribe(this.onRecognized);
                     this._speechService.onSpeechError.subscribe(this.onSpeechError);
+                    this._speechService.say("Started");
                 };
                 AppComponent.prototype.onSpeaking = function (text) {
                     console.log("App.Component:: speaking: " + text);
@@ -44,6 +44,7 @@ System.register(["angular2/core", "./speechService/speech.service", "./weatherCo
                 };
                 AppComponent.prototype.onSpeechStateChanged = function (state) {
                     console.log("App.Component: speech state changed: " + state);
+                    this.speakingStatus = state;
                 };
                 AppComponent.prototype.onSpeechError = function (error) {
                     console.error("ERROR: App.Component:  Speech Error: " + error);
