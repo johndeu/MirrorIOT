@@ -94,8 +94,8 @@
     <Content Include="images\Wide310x150Logo.scale-200.png" />
     <Content Include="index.html" />
     <Content Include="js\default.js" />
+     <Content Include="js\speechRecognizer.js" />
     <Content Include="css\styles.css" />
-    <Content Include="js\speechRecognizer.js" />
     <Content Include="node_modules\angular2\animate.js" />
     <Content Include="node_modules\angular2\bootstrap.js" />
     <Content Include="node_modules\angular2\bundles\angular2-polyfills.js" />
@@ -132,6 +132,7 @@
     <Content Include="node_modules\systemjs\dist\system-polyfills.src.js" />
     <Content Include="node_modules\systemjs\dist\system.js" />
     <Content Include="node_modules\systemjs\dist\system.src.js" />
+    <Content Include="node_modules\node-amplifyjs\lib\amplify.core.js"/>
     <Content Include="package.json" />
     <Content Include="SpeechGrammer\SRGS_grammar.xml" />
     <Content Include="tsconfig.json" />

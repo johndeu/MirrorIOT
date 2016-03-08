@@ -5,11 +5,14 @@
     <link rel="stylesheet" href="WinJS/css/ui-dark.css">  
     <link rel="stylesheet" href="css/styles.css">
 
-
     <script src="WinJS/js/base.js"></script>
     <script src="WinJS/js/ui.js"></script>
     <script src="js/default.js"></script>
+    <script src="js/speechRecognizer.js"></script>
     
+    <!-- Amplifyjs for Pub/Sub -->
+    <script src="node_modules/node-amplifyjs/lib/amplify.core.js"></script>
+      
     <!-- 1. Load libraries -->
     <!-- IE required polyfills, in this exact order -->
     <script src="node_modules/es6-shim/es6-shim.min.js"></script>
@@ -21,7 +24,7 @@
     <script src="node_modules/rxjs/bundles/Rx.js"></script>
     <script src="node_modules/angular2/bundles/angular2.dev.js"></script>
 
-    <!--> Material Lite </!-->
+    <!-- Material Lite -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.1.2/material.indigo-pink.min.css">
     <script defer src="https://code.getmdl.io/1.1.2/material.min.js"></script>
@@ -45,4 +48,5 @@
   <body>
     <my-app>Loading...</my-app>
   </body>
+
 </html>

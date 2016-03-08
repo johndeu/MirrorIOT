@@ -29,8 +29,24 @@ System.register(["angular2/core", "./speechService/speech.service", "./weatherCo
                     this._speechService = _speechService;
                 }
                 AppComponent.prototype.ngOnInit = function () {
-                    this._speechService.say("Angular 2 Started");
                     this.date = "3/1/2016";
+                    this._speechService.say("Started");
+                    this._speechService.onSpeaking.subscribe(this.onSpeaking);
+                    this._speechService.onSpeechStateChanged.subscribe(this.onSpeechStateChanged);
+                    this._speechService.onSpeechRecognized.subscribe(this.onRecognized);
+                    this._speechService.onSpeechError.subscribe(this.onSpeechError);
+                };
+                AppComponent.prototype.onSpeaking = function (text) {
+                    console.log("App.Component:: speaking: " + text);
+                };
+                AppComponent.prototype.onRecognized = function (tag) {
+                    console.log("App.Component:: recognized: " + tag);
+                };
+                AppComponent.prototype.onSpeechStateChanged = function (state) {
+                    console.log("App.Component: speech state changed: " + state);
+                };
+                AppComponent.prototype.onSpeechError = function (error) {
+                    console.error("ERROR: App.Component:  Speech Error: " + error);
                 };
                 AppComponent = __decorate([
                     core_1.Component({
@@ -49,4 +65,3 @@ System.register(["angular2/core", "./speechService/speech.service", "./weatherCo
         }
     }
 });
-//# sourceMappingURL=app.component.js.map

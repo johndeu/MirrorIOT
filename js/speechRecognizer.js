@@ -1,8 +1,5 @@
-﻿
-(function () {
+﻿(function() {
     "use strict";
-
-    var synth = Windows.Media.SpeechSynthesis.SpeechSynthesizer();
 
     var page = WinJS.UI.Pages.define("/index.html", {
         ready: function (element, options) {
@@ -12,47 +9,21 @@
                 context.languages = new Array(defaultLang.languageTag);
                 resourceMap = rcns.ResourceManager.current.mainResourceMap.getSubtree('LocalizationSpeechResources');
                 initializeRecognizer(defaultLang);
-
-                say("Started");
+                    
         },
         unload: function (element, options) {
             if (recognizer != null) {
                 recognizer.removeEventListener('statechanged', onSpeechRecognizerStateChanged, false);
-               // recognizer.continuousRecognitionSession.removeEventListener('resultgenerated', onSpeechRecognizerResultGenerated, false);
                 recognizer.close();
             }
         }
     });
 
     var recognizer;
-
     // localization resources
     var context;
     var resourceMap;
 
-
-    function say(speechString) {
-        let audio = new Audio(); //creating an audio object
-        console.debug("Speaking" + speechString);
-        
-        // get all voices
-        let allVoices = Windows.Media.SpeechSynthesis.SpeechSynthesizer.allVoices;
-        // Find the right voice for now, just use index 0  - Female is allVoices[n].gender=1 with language "en-US".  displayName = "Microsoft Zira Mobile"
-        let selectedVoice = allVoices[0];
-
-        // and use that voice, to be set
-        synth.voice = selectedVoice;
-        synth.synthesizeTextToStreamAsync(speechString).then(function (markersStream) {
-
-            // Convert the stream to a URL Blob.
-            let blob = MSApp.createBlobFromRandomAccessStream(markersStream.ContentType, markersStream);
-
-            // Send the Blob to the audio object.
-            audio.src = URL.createObjectURL(blob, { oneTimeOnly: true });
-            markersStream.seek(0); // start at beginning when speak is hit
-            audio.play();
-        });
-    }
 
     function initializeRecognizer(language) {
         /// <summary>
@@ -89,22 +60,19 @@
         var helpString = "Try saying '" +
             resourceMap.getValue('ListGrammarGoHome', context).valueAsString + "', '" +
             resourceMap.getValue('ListGrammarShowWeather', context).valueAsString + "' or '" +
-        
-        //helpText.innerHTML = resourceMap.getValue('ListGrammarHelpText', context).valueAsString + "<br/>" + helpString;
-
+    
         recognizer.compileConstraintsAsync().done(
             function (result) {
                 // Check to make sure that the constraints were in a proper format and the recognizer was able to compile them.
                 if (result.status != Windows.Media.SpeechRecognition.SpeechRecognitionResultStatus.success) {
-                   // btnContinuousReco.disabled = true;
                     // Let the user know that the grammar didn't compile properly.
                     speechRecognizerUnsuccessful(result.status);
                 }
                 else {
-                   // btnContinuousReco.disabled = false;
+                   // ;
                 }
             }
-        );
+            );
 
         continuousRecoFn();
     }
@@ -115,25 +83,23 @@
         /// Begin recognition or finish the recognition session.
         /// </summary>
         
-        // btnContinuousReco.disabled = true;
+      
         if (recognizer.state != Windows.Media.SpeechRecognition.SpeechRecognizerState.idle) { // Check if the recognizer is listening or going into a state to listen.
-           // btnContinuousReco.innerText = "Stopping recognition...";
-           
-
+            console.log("SpeechRecognizer:: Continous Recognition is Idle, attempting to stop Async.")
             recognizer.continuousRecognitionSession.stopAsync();
             return;
         }
 
-        //btnContinuousReco.innerText = "Stop recognition";
-        errorMessage("");
-
+        console.log("SpeechRecognizer:: Continous Recognition starting.")        
         // Start the continuous recognition session. Results are handled in the event handlers below.
         try {
             recognizer.continuousRecognitionSession.startAsync().then(function completed() {
-                //btnContinuousReco.disabled = false;
+               console.log("SpeechRecognizer:: Continous Recognition started... Listening.")
             });
         }
-        catch (e) { }
+        catch (e) {
+            console.error("SpeechRecognizer:: could not start recognition: " + e.message);
+         }
     }
 
     function onSpeechRecognizerResultGenerated(eventArgs) {
@@ -143,7 +109,7 @@
         /// low confidence).
         /// </summary>
         
-        console.debug("Speech Recognizer Results: " + eventArgs.result.constraint);
+        console.log("Speech Recognizer Results: " + eventArgs.result.constraint);
         
         
         // The garbage rule will not have a tag associated with it, the other rules will return a string matching the tag provided
@@ -157,20 +123,14 @@
         // grammar based on testing.
         if (eventArgs.result.confidence == Windows.Media.SpeechRecognition.SpeechRecognitionConfidence.high ||
             eventArgs.result.confidence == Windows.Media.SpeechRecognition.SpeechRecognitionConfidence.medium) {
-            
-            if (tag == "DamnDaniel")
-            {
-                say("Back at it again with the white Vans!")
-            }else{
-                say("I heard");
-            }
-            
-            // resultTextArea.innerText = "Heard: " + eventArgs.result.text + ", (Tag: '" + tag + "', Confidence: " + convertConfidenceToString(eventArgs.result.confidence) + ")";
-        }
+
+            amplify.publish("SpeechRecognized_High", tag);
+
+         }
         else {
-            console.debug("sorry I didnt catch that")
-            // resultTextArea.innerText = "Sorry, I didn't catch that. (Heard: " + eventArgs.result.text + ", Tag: '" + tag + "', Confidence: " + convertConfidenceToString(eventArgs.result.confidence) + ")";
-        }
+            amplify.publish("SpeechRecognized_Low", tag);
+            console.debug("sorry I didnt catch that");
+       }
     }
 
     function onSpeechRecognizerSessionCompleted(eventArgs) {
@@ -181,26 +141,6 @@
         if (eventArgs.status != Windows.Media.SpeechRecognition.SpeechRecognitionResultStatus.success) {
             speechRecognizerUnsuccessful(eventArgs.status);
         }
-        // btnContinuousReco.innerText = "\uE1d6 Continuous Recognition";
-        // btnContinuousReco.disabled = false;
-      //  languageSelect.disabled = false;
-    }
-
-    function displayMessage(text) {
-        /// <summary>
-        /// Sets the status area with the message details and color.
-        /// </summary>
-         //  statusMessage.innerText = text;
-        //  statusBox.style.backgroundColor = "green";
-    }
-
-    function errorMessage(text) {
-        /// <summary>
-        /// Sets the specified text area with the error message details.
-        /// </summary>
-        if (typeof errorTextArea !== "undefined") {
-           // errorTextArea.innerText = text;
-        }
     }
 
     function onSpeechRecognizerStateChanged(eventArgs) {
@@ -208,35 +148,36 @@
         /// Looks up the state text and displays the message to the user.
         /// </summary>
         
-        console.debug("Speech Recognizer State Changed: " + eventArgs);
-             
+        console.log("Speech Recognizer State Changed: " + eventArgs);
+
         switch (eventArgs.state) {
             case Windows.Media.SpeechRecognition.SpeechRecognizerState.idle: {
-                displayMessage("Speech recognizer state: idle");
+                amplify.publish("SpeechStateChanged", "idle");
                 break;
             }
             case Windows.Media.SpeechRecognition.SpeechRecognizerState.capturing: {
-                displayMessage("Speech recognizer state: capturing");
+             
+                 amplify.publish("SpeechStateChanged", "capturing");
                 break;
             }
             case Windows.Media.SpeechRecognition.SpeechRecognizerState.processing: {
-                displayMessage("Speech recognizer state: processing");
+                 amplify.publish("SpeechStateChanged", "processing");
                 break;
             }
             case Windows.Media.SpeechRecognition.SpeechRecognizerState.soundStarted: {
-                displayMessage("Speech recognizer state: soundStarted");
+                 amplify.publish("SpeechStateChanged", "soundStarted");
                 break;
             }
             case Windows.Media.SpeechRecognition.SpeechRecognizerState.soundEnded: {
-                displayMessage("Speech recognizer state: soundEnded");
+                amplify.publish("SpeechStateChanged", "soundEnded");
                 break;
             }
             case Windows.Media.SpeechRecognition.SpeechRecognizerState.speechDetected: {
-                displayMessage("Speech recognizer state: speechDetected");
+                amplify.publish("SpeechStateChanged", "speechDetected");
                 break;
             }
             case Windows.Media.SpeechRecognition.SpeechRecognizerState.paused: {
-                displayMessage("Speech recognizer state: paused");
+                amplify.publish("SpeechStateChanged", "paused");
                 break;
             }
             default: {
@@ -250,46 +191,46 @@
         /// Looks up the error text and displays the message to the user.
         /// </summary>
         console.debug("speechRecognizer Unsuccessful: " + resultStatus);
-             
+           
         switch (resultStatus) {
             case Windows.Media.SpeechRecognition.SpeechRecognitionResultStatus.audioQualityFailure: {
-                errorMessage("Speech recognition error: audioQualityFailure");
+                amplify.publish("SpeechUnsuccessful", "audioQualityFailure");
                 break;
             }
             case Windows.Media.SpeechRecognition.SpeechRecognitionResultStatus.grammarCompilationFailure: {
-                errorMessage("Speech recognition error: grammarCompilationFailure");
+                amplify.publish("SpeechUnsuccessful", "grammarCompilationFailure");
                 break;
             }
             case Windows.Media.SpeechRecognition.SpeechRecognitionResultStatus.grammarLanguageMismatch: {
-                errorMessage("Speech recognition error: grammarLanguageMismatch");
+               amplify.publish("SpeechUnsuccessful", "grammarLanguageMismatch");
                 break;
             }
             case Windows.Media.SpeechRecognition.SpeechRecognitionResultStatus.microphoneUnavailable: {
-                errorMessage("Speech recognition error: microphoneUnavailable");
+              amplify.publish("SpeechUnsuccessful", "microphoneUnavailable");
                 break;
             }
             case Windows.Media.SpeechRecognition.SpeechRecognitionResultStatus.networkFailure: {
-                errorMessage("Speech recognition error: networkFailure");
+                amplify.publish("SpeechUnsuccessful", "networkFailure");
                 break;
             }
             case Windows.Media.SpeechRecognition.SpeechRecognitionResultStatus.pauseLimitExceeded: {
-                errorMessage("Speech recognition error: pauseLimitExceeded");
+                amplify.publish("SpeechUnsuccessful", "pauseLimitExceeded");
                 break;
             }
             case Windows.Media.SpeechRecognition.SpeechRecognitionResultStatus.timeoutExceeded: {
-                errorMessage("Speech recognition error: timeoutExceeded");
+                amplify.publish("SpeechUnsuccessful", "timeoutExceeded");
                 break;
             }
             case Windows.Media.SpeechRecognition.SpeechRecognitionResultStatus.topicLanguageNotSupported: {
-                errorMessage("Speech recognition error: topicLanguageNotSupported");
+                amplify.publish("SpeechUnsuccessful", "topicLanguageNotSupported");
                 break;
             }
             case Windows.Media.SpeechRecognition.SpeechRecognitionResultStatus.unknown: {
-                errorMessage("Speech recognition error: unknown");
+                amplify.publish("SpeechUnsuccessful", "unknown");
                 break;
             }
             case Windows.Media.SpeechRecognition.SpeechRecognitionResultStatus.userCanceled: {
-                errorMessage("Recognition canceled by the user.");
+                amplify.publish("SpeechUnsuccessful", "userCanceled");
                 break;
             }
             default: {

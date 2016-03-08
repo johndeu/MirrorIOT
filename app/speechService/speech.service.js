@@ -20,14 +20,55 @@ System.register(["angular2/core"], function(exports_1, context_1) {
         execute: function() {
             SpeechService = (function () {
                 function SpeechService() {
-                    this.speaking = new core_1.EventEmitter();
+                    this.onSpeaking = new core_1.EventEmitter();
+                    this.onSpeechStateChanged = new core_1.EventEmitter();
+                    this.onSpeechError = new core_1.EventEmitter();
+                    this.onSpeechRecognized = new core_1.EventEmitter();
+                    this.onSpeechNotRecognized = new core_1.EventEmitter();
+                    // HACK: This was the only way i could figure out how to Pub/Sub to the events on the WinJS speech Recognizer. 
+                    // Using it in the this service directly was not resolving the callbacks, so i have kept the core speech recognition engine running in 
+                    // js/speechrecognizer.js.    I am using Amplifyjs core for the pub/sub feature.  Amplifyjs is loaded in the index.html page and added to 
+                    // the Window object.  I am using the amplifyjs typings file in this service to enable the amplifyStatic interface typings for subscribe. 
+                    if (typeof (window.amplify) != "undefined") {
+                        var amp = window.amplify;
+                        // Subscribe to the Speaking topic on Amplifyjs. Event is published from speechRecognizer.js
+                        // the "this" is the context for the callback, otherwise it will be undefined in speaking method and i cant' use this.onSpeaking.emit(data)
+                        amp.subscribe("Speaking", this, this.speaking);
+                        // SpeechStateChanged
+                        amp.subscribe("SpeechStateChanged", this, this.speechStateChanged);
+                        //  SpeechUnsuccessful
+                        amp.subscribe("SpeechUnsuccessful", this, this.speechError);
+                        // SpeechRecognized_High
+                        amp.subscribe("SpeechRecognized_High", this, this.speechRecognized);
+                        // SpeechRecognized_Low      
+                        amp.subscribe("SpeechRecognized_Low", this, this.speechNotRecognized);
+                    }
                 }
+                SpeechService.prototype.speaking = function (data) {
+                    console.log("Speech.Service:: Speaking data:" + data);
+                    this.onSpeaking.emit(data);
+                };
+                SpeechService.prototype.speechStateChanged = function (state) {
+                    console.log("Speech.Service:: Speech State changed to : " + state);
+                    this.onSpeechStateChanged.emit(state);
+                };
+                SpeechService.prototype.speechError = function (error) {
+                    console.log("Speech.Service:: Speech Error : " + error);
+                    this.onSpeechError.emit(error);
+                };
+                SpeechService.prototype.speechRecognized = function (tag) {
+                    console.log("Speech.Service:: Speech Recognized with tag : " + tag);
+                    this.onSpeechRecognized.emit(tag);
+                };
+                SpeechService.prototype.speechNotRecognized = function (tag) {
+                    console.log("Speech.Service:: Speech was Not Recognized,  with tag : " + tag);
+                    this.onSpeechNotRecognized.emit(tag);
+                };
                 SpeechService.prototype.say = function (speechString) {
                     if (typeof (Windows) != "undefined") {
                         var synth = Windows.Media.SpeechSynthesis.SpeechSynthesizer();
                         var audio_1 = new Audio(); //creating an audio object
                         console.log("Speaking the phrase: " + speechString);
-                        this.speaking.emit(true);
                         // get all voices
                         var allVoices = Windows.Media.SpeechSynthesis.SpeechSynthesizer.allVoices;
                         // Find the right voice for now, just use index 0  - Female is allVoices[n].gender=1 with language "en-US".  displayName = "Microsoft Zira Mobile"
@@ -47,7 +88,23 @@ System.register(["angular2/core"], function(exports_1, context_1) {
                 __decorate([
                     core_1.Output(), 
                     __metadata('design:type', core_1.EventEmitter)
-                ], SpeechService.prototype, "speaking", void 0);
+                ], SpeechService.prototype, "onSpeaking", void 0);
+                __decorate([
+                    core_1.Output(), 
+                    __metadata('design:type', core_1.EventEmitter)
+                ], SpeechService.prototype, "onSpeechStateChanged", void 0);
+                __decorate([
+                    core_1.Output(), 
+                    __metadata('design:type', core_1.EventEmitter)
+                ], SpeechService.prototype, "onSpeechError", void 0);
+                __decorate([
+                    core_1.Output(), 
+                    __metadata('design:type', core_1.EventEmitter)
+                ], SpeechService.prototype, "onSpeechRecognized", void 0);
+                __decorate([
+                    core_1.Output(), 
+                    __metadata('design:type', core_1.EventEmitter)
+                ], SpeechService.prototype, "onSpeechNotRecognized", void 0);
                 SpeechService = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [])
@@ -59,4 +116,3 @@ System.register(["angular2/core"], function(exports_1, context_1) {
         }
     }
 });
-//# sourceMappingURL=speech.service.js.map

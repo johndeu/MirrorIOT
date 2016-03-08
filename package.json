@@ -12,9 +12,11 @@
     "postinstall": "typings install"
   },
   "dependencies": {
+    "amplify": "0.0.11",
     "angular2": "2.0.0-beta.7",
     "es6-promise": "^3.0.2",
     "es6-shim": "^0.33.3",
+    "node-amplifyjs": "0.0.1",
     "reflect-metadata": "0.1.2",
     "rxjs": "5.0.0-beta.2",
     "systemjs": "0.19.22",

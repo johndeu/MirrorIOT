@@ -20,7 +20,31 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
-        this._speechService.say("Angular 2 Started");
-        this.date = "3/1/2016";
+      
+        this.date = "3/1/2016";       
+ 
+       
+        this._speechService.onSpeaking.subscribe(this.onSpeaking);
+        this._speechService.onSpeechStateChanged.subscribe(this.onSpeechStateChanged);
+        this._speechService.onSpeechRecognized.subscribe(this.onRecognized);
+        this._speechService.onSpeechError.subscribe(this.onSpeechError);
+
+         this._speechService.say("Started");
+    }
+    
+    onSpeaking(text:string){
+        console.log("App.Component:: speaking: " + text);
+    }
+    
+    onRecognized(tag:string) {
+        console.log("App.Component:: recognized: " + tag);
+    }
+    
+    onSpeechStateChanged(state:string) {
+        console.log("App.Component: speech state changed: " + state);
+    }
+
+    onSpeechError(error: string) {
+        console.error("ERROR: App.Component:  Speech Error: " + error);
     }
 }
