@@ -7,6 +7,7 @@
                 var rcns = Windows.ApplicationModel.Resources.Core;
                 context = new rcns.ResourceContext();
                 context.languages = new Array(defaultLang.languageTag);
+                console.log("Language:" + defaultLang.languageTag)
                 resourceMap = rcns.ResourceManager.current.mainResourceMap.getSubtree('LocalizationSpeechResources');
                 initializeRecognizer(defaultLang);
                     
@@ -48,33 +49,26 @@
             ], "GoHome"));
         recognizer.constraints.append(
             Windows.Media.SpeechRecognition.SpeechRecognitionListConstraint([
-                resourceMap.getValue('ListGrammarShowWeather', context).valueAsString
-            ], "ShowWeather"));
-        recognizer.constraints.append(
-            Windows.Media.SpeechRecognition.SpeechRecognitionListConstraint([
                 resourceMap.getValue('DamnDaniel', context).valueAsString
             ], "DamnDaniel"));
 
 
-        // RecognizeWithUIAsync allows developers to customize the prompts.
-        var helpString = "Try saying '" +
-            resourceMap.getValue('ListGrammarGoHome', context).valueAsString + "', '" +
-            resourceMap.getValue('ListGrammarShowWeather', context).valueAsString + "' or '" +
-    
         recognizer.compileConstraintsAsync().done(
             function (result) {
                 // Check to make sure that the constraints were in a proper format and the recognizer was able to compile them.
                 if (result.status != Windows.Media.SpeechRecognition.SpeechRecognitionResultStatus.success) {
                     // Let the user know that the grammar didn't compile properly.
                     speechRecognizerUnsuccessful(result.status);
+                    console.error("Compilation Error");
                 }
                 else {
-                   // ;
+                    console.log("Compilation Complete");
+                    continuousRecoFn();
                 }
             }
             );
 
-        continuousRecoFn();
+       
     }
 
 
@@ -89,16 +83,17 @@
             recognizer.continuousRecognitionSession.stopAsync();
             return;
         }
-
-        console.log("SpeechRecognizer:: Continous Recognition starting.")        
+     
         // Start the continuous recognition session. Results are handled in the event handlers below.
         try {
             recognizer.continuousRecognitionSession.startAsync().then(function completed() {
-               console.log("SpeechRecognizer:: Continous Recognition started... Listening.")
+                console.log("SpeechRecognizer:: Continous Recognition started... Listening.")
+                amplify.publish("SpeechStateChanged", "Started")
             });
         }
         catch (e) {
             console.error("SpeechRecognizer:: could not start recognition: " + e.message);
+            amplify.publish("SpeechUnsuccessful", "FailedToStart");
          }
     }
 

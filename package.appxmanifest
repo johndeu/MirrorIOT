@@ -22,6 +22,8 @@
       </uap:VisualElements>
       <uap:ApplicationContentUriRules>
         <uap:Rule Match="ms-appx-web://" Type="include" WindowsRuntimeAccess="all" />
+        <uap:Rule Match="https://code.getmdl.io/" Type="include" WindowsRuntimeAccess="allowForWebOnly" />
+        <uap:Rule Match="https://fonts.googleapis.com" Type="include" WindowsRuntimeAccess="allowForWebOnly" />
       </uap:ApplicationContentUriRules>
     </Application>
   </Applications>

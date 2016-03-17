@@ -8,7 +8,6 @@
     <script src="WinJS/js/base.js"></script>
     <script src="WinJS/js/ui.js"></script>
     <script src="js/default.js"></script>
-    <script src="js/speechRecognizer.js"></script>
     
     <!-- Amplifyjs for Pub/Sub -->
     <script src="node_modules/node-amplifyjs/lib/amplify.core.js"></script>
@@ -29,6 +28,9 @@
     <link rel="stylesheet" href="https://code.getmdl.io/1.1.2/material.indigo-pink.min.css">
     <script defer src="https://code.getmdl.io/1.1.2/material.min.js"></script>
 
+
+
+    
     <!-- 2. Configure SystemJS -->
     <script>
       System.config({
@@ -42,11 +44,16 @@
       System.import('app/main')
             .then(null, console.error.bind(console));
     </script>
+
   </head>
 
   <!-- 3. Display the application -->
   <body>
     <my-app>Loading...</my-app>
+    
+        
+     <!-- load speech recognizer last in order to get proper events and errors-->
+     <script src="js/speechRecognizer.js"></script>
   </body>
-
+  
 </html>

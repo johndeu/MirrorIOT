@@ -11,15 +11,22 @@ System.register(["angular2/core"], function(exports_1, context_1) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1;
-    var SpeechService;
+    var RecognitionState, SpeechService;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
             }],
         execute: function() {
+            (function (RecognitionState) {
+                RecognitionState[RecognitionState["Initializing"] = 0] = "Initializing";
+                RecognitionState[RecognitionState["Started"] = 1] = "Started";
+                RecognitionState[RecognitionState["Error"] = 2] = "Error";
+            })(RecognitionState || (RecognitionState = {}));
+            exports_1("RecognitionState", RecognitionState);
             SpeechService = (function () {
                 function SpeechService() {
+                    this.recognitionState = RecognitionState.Initializing;
                     this.onSpeaking = new core_1.EventEmitter();
                     this.onSpeechStateChanged = new core_1.EventEmitter();
                     this.onSpeechError = new core_1.EventEmitter();
@@ -46,23 +53,29 @@ System.register(["angular2/core"], function(exports_1, context_1) {
                 }
                 SpeechService.prototype.speaking = function (data) {
                     console.log("Speech.Service:: Speaking data:" + data);
-                    this.onSpeaking.emit(data);
+                    this.onSpeaking.next(data);
                 };
                 SpeechService.prototype.speechStateChanged = function (state) {
                     console.log("Speech.Service:: Speech State changed to : " + state);
-                    this.onSpeechStateChanged.emit(state);
+                    if (state == "Started") {
+                        this.recognitionState = RecognitionState.Started;
+                    }
+                    this.onSpeechStateChanged.next(state);
                 };
                 SpeechService.prototype.speechError = function (error) {
                     console.log("Speech.Service:: Speech Error : " + error);
-                    this.onSpeechError.emit(error);
+                    if (error == "FailedToStart") {
+                        this.recognitionState = RecognitionState.Error;
+                    }
+                    this.onSpeechError.next(error);
                 };
                 SpeechService.prototype.speechRecognized = function (tag) {
                     console.log("Speech.Service:: Speech Recognized with tag : " + tag);
-                    this.onSpeechRecognized.emit(tag);
+                    this.onSpeechRecognized.next(tag);
                 };
                 SpeechService.prototype.speechNotRecognized = function (tag) {
                     console.log("Speech.Service:: Speech was Not Recognized,  with tag : " + tag);
-                    this.onSpeechNotRecognized.emit(tag);
+                    this.onSpeechNotRecognized.next(tag);
                 };
                 SpeechService.prototype.say = function (speechString) {
                     if (typeof (Windows) != "undefined") {
@@ -85,26 +98,6 @@ System.register(["angular2/core"], function(exports_1, context_1) {
                         });
                     }
                 };
-                __decorate([
-                    core_1.Output(), 
-                    __metadata('design:type', core_1.EventEmitter)
-                ], SpeechService.prototype, "onSpeaking", void 0);
-                __decorate([
-                    core_1.Output(), 
-                    __metadata('design:type', core_1.EventEmitter)
-                ], SpeechService.prototype, "onSpeechStateChanged", void 0);
-                __decorate([
-                    core_1.Output(), 
-                    __metadata('design:type', core_1.EventEmitter)
-                ], SpeechService.prototype, "onSpeechError", void 0);
-                __decorate([
-                    core_1.Output(), 
-                    __metadata('design:type', core_1.EventEmitter)
-                ], SpeechService.prototype, "onSpeechRecognized", void 0);
-                __decorate([
-                    core_1.Output(), 
-                    __metadata('design:type', core_1.EventEmitter)
-                ], SpeechService.prototype, "onSpeechNotRecognized", void 0);
                 SpeechService = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [])

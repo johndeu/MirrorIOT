@@ -1,45 +1,26 @@
 <div class="mdl-grid">
   <div class="mdl-cell mdl-cell--3-col-desktop">
-       <weather-app></weather-app>
+
   </div>
   <div class="mdl-cell mdl-cell--1-col-desktop">  
   </div>
     <div class="mdl-cell mdl-cell--4-col-desktop">
       <h1>Main Mirror </h1> <i class="material-icons">settings_voice</i> 
-      <h2>Status: {{speakingStatus}}</h2>
-          
+      <h3>Status: {{speakingStatus}}</h3>
+      <h3>Date:{{ date }}</h3>
+      <h3>EmitMessage:{{ emitMessage }}</h3>
+      <h3>SpeechError:{{ speechError }}</h3>
+      <h4>State:{{recognitionState}} </h4>
+     <input name="test"  [(title)] = "speakingStatus" />
+     <button (click)="clicked()">change</button>
+      
   </div>
   <div class="mdl-cell mdl-cell--1-col-desktop">
 
   </div>
   <div class="mdl-cell mdl-cell--3-col-desktop">
-      <div class="mdl-card">
-        <div class="mdl-card__title">
-            <h2 class="mdl-card__title-text">Calendar App </h2>
-        </div>
-
-        <div class="mdl-card__supporting-text">
-        Some calendar stuff
-        </div>
-      </div>
-       <div class="mdl-card">
-        <div class="mdl-card__title">
-            <h2 class="mdl-card__title-text">App 2</h2>
-        </div>
-
-        <div class="mdl-card__supporting-text">
-        Some calendar stuff
-        </div>
-      </div>
-       <div class="mdl-card">
-        <div class="mdl-card__title">
-            <h2 class="mdl-card__title-text">App 3 </h2>
-        </div>
-
-        <div class="mdl-card__supporting-text">
-        Some calendar stuff
-        </div>
-      </div>
+  
+    
   </div>
  
 </div>

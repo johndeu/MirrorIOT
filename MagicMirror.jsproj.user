@@ -5,13 +5,17 @@
     <ShowAllFiles>true</ShowAllFiles>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebuggerFlavor>AppHostLocalDebugger</DebuggerFlavor>
+    <DebuggerFlavor>AppHostRemoteDebugger</DebuggerFlavor>
     <MachineName>deutscherpi</MachineName>
     <RequireAuthentication>Universal</RequireAuthentication>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DebuggerFlavor>AppHostLocalDebugger</DebuggerFlavor>
+    <DebuggerFlavor>AppHostRemoteDebugger</DebuggerFlavor>
     <MachineName>deutscherpi</MachineName>
     <RequireAuthentication>Universal</RequireAuthentication>
+    <WindowsPhoneEmulatorID>98CD6FA8-9114-4179-ACA3-38E5D23C77EE;Mobile Emulator 10.0.10586.0 WVGA 4 inch 512MB</WindowsPhoneEmulatorID>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DebuggerFlavor>AppHostRemoteDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>

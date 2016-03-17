@@ -12,7 +12,7 @@
     "postinstall": "typings install"
   },
   "dependencies": {
-    "angular2": "2.0.0-beta.7",
+    "angular2": "^2.0.0-beta.9",
     "es6-promise": "^3.0.2",
     "es6-shim": "^0.33.3",
     "node-amplifyjs": "0.0.1",

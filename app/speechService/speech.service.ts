@@ -1,14 +1,22 @@
 /// <reference path="../../typings/amplifyjs/amplifyjs.d.ts" />
 import {Injectable, EventEmitter, Input, Output} from "angular2/core";
+import {Observable} from "rxjs/Observable";
+
+export enum RecognitionState{
+    Initializing,
+    Started,
+    Error
+}
 
 @Injectable()
 export class SpeechService {
 
-    @Output() onSpeaking: EventEmitter<string>;
-    @Output() onSpeechStateChanged: EventEmitter<string>;
-    @Output() onSpeechError: EventEmitter<string>;
-    @Output() onSpeechRecognized: EventEmitter<string>;
-    @Output() onSpeechNotRecognized: EventEmitter<string>;
+    public onSpeaking: EventEmitter<string>;
+    public onSpeechStateChanged: EventEmitter<string>;
+    public onSpeechError: EventEmitter<string>;
+    public onSpeechRecognized: EventEmitter<string>;
+    public onSpeechNotRecognized: EventEmitter<string>;
+    public recognitionState: RecognitionState = RecognitionState.Initializing;
 
     constructor() {
 
@@ -44,28 +52,34 @@ export class SpeechService {
 
     speaking(data: string) {
         console.log("Speech.Service:: Speaking data:" + data);
-        this.onSpeaking.emit(data);
+        this.onSpeaking.next(data);
     }
 
     speechStateChanged(state: string) {
         console.log("Speech.Service:: Speech State changed to : " + state);
-        this.onSpeechStateChanged.emit(state);
+        if (state == "Started") {
+            this.recognitionState = RecognitionState.Started;
+        }
+        this.onSpeechStateChanged.next(state);
     }
 
     speechError(error: string) {
         console.log("Speech.Service:: Speech Error : " + error);
-        this.onSpeechError.emit(error);
+        if (error == "FailedToStart") {
+            this.recognitionState = RecognitionState.Error;
+        }
+        this.onSpeechError.next(error);
     }
 
 
     speechRecognized(tag: string) {
         console.log("Speech.Service:: Speech Recognized with tag : " + tag);
-        this.onSpeechRecognized.emit(tag);
+        this.onSpeechRecognized.next(tag);
     }
 
     speechNotRecognized(tag: string) {
         console.log("Speech.Service:: Speech was Not Recognized,  with tag : " + tag);
-        this.onSpeechNotRecognized.emit(tag);
+        this.onSpeechNotRecognized.next(tag);
     }
 
     say(speechString: string) {
