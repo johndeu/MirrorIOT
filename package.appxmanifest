@@ -22,15 +22,13 @@
       </uap:VisualElements>
       <uap:ApplicationContentUriRules>
         <uap:Rule Match="ms-appx-web://" Type="include" WindowsRuntimeAccess="all" />
-        <uap:Rule Match="https://code.getmdl.io/" Type="include" WindowsRuntimeAccess="allowForWebOnly" />
-        <uap:Rule Match="https://fonts.googleapis.com" Type="include" WindowsRuntimeAccess="allowForWebOnly" />
+        <uap:Rule Match="https://code.getmdl.io/" Type="include" WindowsRuntimeAccess="none" />
+        <uap:Rule Match="https://fonts.googleapis.com/" Type="include" WindowsRuntimeAccess="none" />
       </uap:ApplicationContentUriRules>
     </Application>
   </Applications>
   <Capabilities>
     <Capability Name="internetClient" />
-    <Capability Name="internetClientServer" />
-    <Capability Name="privateNetworkClientServer" />
     <uap:Capability Name="picturesLibrary" />
     <DeviceCapability Name="location" />
     <DeviceCapability Name="microphone" />

@@ -136,8 +136,7 @@
     <Content Include="node_modules\systemjs\dist\system.src.js" />
     <Content Include="node_modules\node-amplifyjs\lib\amplify.core.js" />
     <Content Include="package.json" />
-    <Content Include="SpeechGrammer\en-US\LocalizationSpeechResources.resw" />
-    <Content Include="SpeechGrammer\SRGS_grammar.xml" />
+    <Content Include="SpeechGrammer\en-US\SRGS_grammar.xml" />
     <Content Include="tsconfig.json" />
     <Content Include="typings.json" />
     <Content Include="WinJS\css\ui-dark.css" />
@@ -147,11 +146,6 @@
     <Content Include="WinJS\js\base.js" />
     <Content Include="WinJS\js\ui.js" />
     <None Include="MagicMirror_TemporaryKey.pfx" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="SpeechGrammer\en-US\LocalizationSpeechResources.resjson">
-      <Link>SpeechGrammer\en-US\LocalizationSpeechResources.resjson</Link>
-    </PRIResource>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4a0dddb5-7a95-4fbf-97cc-616d07737a77}" />
