@@ -90,7 +90,9 @@ System.register(["angular2/core", "./speechService/speech.service", "./weatherCo
                     core_1.Component({
                         selector: "my-app",
                         templateUrl: 'app/app.component.html',
-                        directives: [weather_component_1.WeatherComponent],
+                        directives: [
+                            weather_component_1.WeatherComponent
+                        ],
                         providers: [
                             speech_service_1.SpeechService,
                             emit_service_1.EmitMessageService

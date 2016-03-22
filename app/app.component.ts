@@ -7,7 +7,9 @@ import {EmitMessageService} from "./emit.service";
 @Component({
     selector: "my-app",
     templateUrl: 'app/app.component.html',
-    directives: [WeatherComponent],
+    directives: [
+        WeatherComponent
+    ],
     providers: [
         SpeechService,
         EmitMessageService

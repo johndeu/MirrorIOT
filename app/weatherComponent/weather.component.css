@@ -1,0 +1,11 @@
+.mdl-card{
+    background-color: black;
+    color: white;
+}
+mdl-card__title{
+    background-color: black;
+    color:white;
+}
+.mdl-card__title-text{
+    color:white;
+}

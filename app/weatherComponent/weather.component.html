@@ -2,4 +2,37 @@
     <div class="mdl-card__title">
         <h2 class="mdl-card__title-text">Weather App</h2>
     </div>
+
+
+    <table *ngIf="weather">
+        <tr>
+            <td>
+                   <i [class]="getIcon()" style="font-size:5em"></i>
+            </td>
+            <td>
+                {{weather.weather[0].description}}
+            </td> 
+        </tr>
+        <tr>
+
+            <td>Temperature:</td>
+            <td>{{weather.main.temp}}</td>
+        </tr>
+        <tr>
+            <td>Min:</td>
+            <td>{{weather.main.temp_min}}</td>
+        </tr>
+        <tr>
+            <td>Max:</td>
+            <td>{{weather.main.temp_max}}</td>
+        </tr>
+
+    </table>
+    <div>
+        {{weather | json}}
+    </div>
+    <div class="error" *ngIf="errorMessage">
+        {{errorMessage}}
+    </div>
+ 
 </div>
